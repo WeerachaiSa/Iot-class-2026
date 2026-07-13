@@ -50,19 +50,39 @@ services:
     networks:
       - iot
     ports:
-      - '3000:3000'
+      - "3000:3000"
   
-  telegraf:
+  # ==================================================================
+  #  TELEGRAF COLLECTOR: ดึงข้อมูลจาก MQTT (VerneMQ) -> โยนลงฐานข้อมูล InfluxDB
+  # ==================================================================
+  telegraf-collector:
     image: telegraf:1.39
-    container_name: telegraf
+    container_name: telegraf-collector
     volumes:
-      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/telegraf-collector.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       - vernemq1
       - influxdb
     networks:
       - iot
-  
+    restart: unless-stopped
+
+  # ==================================================================
+  #  TELEGRAF COLLECTOR: ดึงข้อมูลจาก MQTT (VerneMQ) -> โยนลงฐานข้อมูล InfluxDB
+  # ==================================================================
+  telegraf-gateway:
+    image: telegraf:1.39
+    container_name: telegraf-gateway
+    volumes:
+      - ./telegraf/telegraf-gateway.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - vernemq1
+    ports:
+      - "5005:5005/udp"
+    networks:
+      - iot
+    restart: unless-stopped
+
   influxdb:
     image: influxdb:2.9
     ports:
