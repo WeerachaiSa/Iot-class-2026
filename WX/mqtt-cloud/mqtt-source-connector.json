@@ -1,0 +1,17 @@
+{
+  "name": "vernemq-mqtt-source",
+  "config": {
+    "connector.class": "io.confluent.connect.mqtt.MqttSourceConnector",
+    "tasks.max": "2",
+    "mqtt.server.uri": "tcp://vernemq1.local:1883",
+    "mqtt.topics": "v1/+",
+    "mqtt.client.id": "kafka_connect_bridge_service",
+    "kafka.topic": "university.sensors.telemetry",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "mqtt.qos": "1",
+    "mqtt.clean.session": "true",
+    "confluent.topic.bootstrap.servers": "kafka:29092",
+    "confluent.topic.replication.factor": "1"
+  }
+}
